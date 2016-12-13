@@ -48,7 +48,7 @@ void draw() {
     if (video.available()) {     //if there is a frame of webcam available
       video.read();              //get the webcam frame
 
-      image(video, 0, 0);        //display the webcam frame
+      image(video, (width-w)/2, (height-h)/2);        //display the webcam frame
 
       opencv.loadImage(video);   //load the webcam frame into opencv
       faces = opencv.detect();   //find the faces
@@ -60,7 +60,6 @@ void draw() {
       for (int i = 0; i < faces.length; i++) {
         rect(faces[i].x, faces[i].y, faces[i].width, faces[i].height);
       }
-
 
       if (faces.length > 0) state++;  //if a face is found move on to the next state
     }
@@ -86,7 +85,13 @@ void draw() {
     /* if the amount of time in seconds since the movie began 
      is greater than the duration of the movie (ie if the movie 
      is over), go back to the start state. */
-    if ((float)ellapsed/1000.0 >= mov.duration()) state = 0; 
+    if ((float)ellapsed/1000.0 >= mov.duration()) {
+      background(0);
+      mov.play();  
+      mov.jump(0);  
+      mov.pause();
+      state = 0;
+    }
 
     break;
   default:
